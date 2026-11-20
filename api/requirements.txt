@@ -1,0 +1,3 @@
+# Dependencias de la API Chalice (se instalan en venv-api, no se versiona el venv)
+chalice
+boto3

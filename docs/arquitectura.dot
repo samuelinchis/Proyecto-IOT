@@ -1,0 +1,14 @@
+digraph G {
+  rankdir=LR; fontname="Helvetica"; node [fontname="Helvetica", shape=box, style="rounded,filled", fontsize=12]; edge [fontname="Helvetica", fontsize=10];
+  sensor [label="Sensor IoT\n(simulado / invoke)", fillcolor="#eeeeee"];
+  pub [label="Lambda\niot_publisher_lambda", fillcolor="#ffb766"];
+  s3 [label="Bucket S3\nevents/*.json", fillcolor="#7ec27e", shape=cylinder];
+  ing [label="Lambda\niot_ingestor_lambda", fillcolor="#ffb766"];
+  ddb [label="DynamoDB\niot_lecturas", fillcolor="#7aa7e8", shape=cylinder];
+  sensor -> pub [label="invoke"];
+  pub -> s3 [label="PutObject (JSON)"];
+  s3 -> ing [label="ObjectCreated\n(trigger)"];
+  ing -> s3 [label="GetObject", style=dashed];
+  ing -> ddb [label="PutItem"];
+  subgraph cluster_aws { label="AWS (us-east-1) - Terraform en /infraestructura, código en /lambdas"; style=dashed; pub; s3; ing; ddb; }
+}

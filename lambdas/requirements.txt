@@ -1,0 +1,5 @@
+# Dependencias para ejecutar/probar localmente.
+# En AWS Lambda boto3 ya viene incluido, por eso no se empaqueta.
+boto3
+moto[s3,dynamodb]
+pytest

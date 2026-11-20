@@ -1,0 +1,20 @@
+# Entornos virtuales: NO se versionan, se recrean con los requirements.txt
+venv/
+venv-api/
+lambdas/.venv/
+.chalice/venv/
+
+# Cachés y archivos de Python
+.pytest_cache/
+**/__pycache__/
+*.py[cod]
+
+# Configuración local de herramientas
+.claude/settings.local.json
+
+# Artefactos de Terraform y Chalice (reforzado; también están en sus .gitignore)
+.terraform/
+*.tfstate*
+*.tfplan
+dummy.zip
+.chalice/deployments/
