@@ -1,7 +1,11 @@
 from chalice import BadRequestError, Chalice, Response
+import boto3
+import os
+import json
 
 app = Chalice(app_name='api')
 
+lambda_client = boto3.client("lambda")
 
 @app.route('/')
 def index():
@@ -35,10 +39,25 @@ def temp_registry():
         return Response(body={
             'idnotfound': 'Sensor has no device_id'
         }, status_code=400)
-    #Retorna que todo está bien (código 200) si no cayó en 
-    #una excepción
+    # Todo válido: invocamos a la publisher y devolvemos su respuesta.
     else:
-        return Response(body={'mensaje':'Correcto'},
-                        status_code=200)
+        response = lambda_client.invoke(
+            FunctionName=os.environ["PUBLISHER_FUNCTION_NAME"],
+            InvocationType="RequestResponse",
+            Payload=json.dumps(body_as_json),
+        )
+
+        # Si la publisher falló, no reportamos éxito.
+        if response.get("FunctionError"):
+            return Response(body={
+                'error': 'La lambda publisher falló',
+                'detalle': response["Payload"].read().decode("utf-8"),
+            }, status_code=502)
+
+        # Payload: bytes -> str -> dict -> dict dentro de "body".
+        payload_dict = json.loads(
+            json.loads(response["Payload"].read().decode("utf-8"))["body"]
+        )
+        return Response(body=payload_dict, status_code=200)
 
 

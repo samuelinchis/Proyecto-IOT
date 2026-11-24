@@ -3,7 +3,13 @@
   "app_name": "api",
   "stages": {
     "dev": {
-      "api_gateway_stage": "api"
+      "api_gateway_stage": "api",
+      "autogen_policy": false,
+      "iam_role_arn": "arn:aws:iam::112933170026:role/LabRole",
+      "environment_variables": {
+        "PUBLISHER_FUNCTION_NAME": "iot_publisher_lambda",
+        "TABLE_NAME": "iot_lecturas"
+      }
     }
   }
 }
