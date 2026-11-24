@@ -5,7 +5,8 @@
     "dev": {
       "api_gateway_stage": "api",
       "autogen_policy": false,
-      "iam_role_arn": "arn:aws:iam::112933170026:role/LabRole",
+      "manage_iam_role": false,
+      "iam_role_arn": "arn:aws:iam::687184835355:role/LabRole",
       "environment_variables": {
         "PUBLISHER_FUNCTION_NAME": "iot_publisher_lambda",
         "TABLE_NAME": "iot_lecturas"
