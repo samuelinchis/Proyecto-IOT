@@ -66,9 +66,9 @@ def temp_registry():
 
 #Bloque de lo correspondiente a la función get
 
-dynamodb = boto3.resource("dynamodb")
-TABLE_NAME = os.environ.get("TABLE_NAME", "iot_lecturas")
-table = dynamodb.Table(TABLE_NAME)
+dynamodb = boto3.resource("dynamodb")                           #Creas un recurso de Boto3 para interactuar con Amazon DynamoDB.
+TABLE_NAME = os.environ.get("TABLE_NAME", "iot_lecturas")       #Obtener nombre tabla
+table = dynamodb.Table(TABLE_NAME)                              #Obtener uan referencia a la tabla
 
 def _convert_decimals(value):
     if isinstance(value, list):
@@ -96,6 +96,9 @@ def get_sensor_readings(sensor_id: str):
             raise BadRequestError("El parámetro 'limit' debe ser un entero positivo.")
 
     response = table.query(**query_kwargs)
+    #"response = table.query(
+    #KeyConditionExpression=Key("device_id").eq("sensor_01"),
+    #Limit=5)"
     items = _convert_decimals(response.get("Items", []))
 
     return {

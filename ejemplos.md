@@ -32,36 +32,39 @@ Pipeline de ingesta y consulta de lecturas de sensores IoT construido con **AWS 
 
 ## Comandos para probar POST y GET
 ```
-Reemplaza `https://y6jm23uqc3.execute-api.us-east-1.amazonaws.com/api` por la URL de tu API.
+Reemplaza `https://y6jm23uqc3.execute-api.us-east-1.amazonaws.com/api` por la URL de tu API. Esta se obtiene con el comando
+```bash 
+chalice url
+```
 
 
 ### Probar POST `/eventos`
 
 ```bash
 # 1. Envío válido (esperado: HTTP 200)
-curl -i -w "\n" -X POST "[https://y6jm23uqc3.execute-api.us-east-1.amazonaws.com/api/eventos](https://y6jm23uqc3.execute-api.us-east-1.amazonaws.com/api/eventos)" \
+curl -i -w "\n" -X POST "https://y6jm23uqc3.execute-api.us-east-1.amazonaws.com/api/eventos" \
   -H "Content-Type: application/json" \
   -d '{"device_id": "sensor-02"}'
 
 # 2. Sin device_id (esperado: HTTP 400)
-curl -i -w "\n" -X POST "[https://y6jm23uqc3.execute-api.us-east-1.amazonaws.com/api/eventos](https://y6jm23uqc3.execute-api.us-east-1.amazonaws.com/api/eventos)" \
+curl -i -w "\n" -X POST "https://y6jm23uqc3.execute-api.us-east-1.amazonaws.com/api/eventos" \
   -H "Content-Type: application/json" \
   -d '{}'
 
 # 3. JSON mal formado (esperado: HTTP 400)
-curl -i -w "\n" -X POST "[https://y6jm23uqc3.execute-api.us-east-1.amazonaws.com/api/eventos](https://y6jm23uqc3.execute-api.us-east-1.amazonaws.com/api/eventos)" \
+curl -i -w "\n" -X POST "https://y6jm23uqc3.execute-api.us-east-1.amazonaws.com/api/eventos" \
   -H "Content-Type: application/json" \
-  -d '{no-es-json'}
+  -d '{no-es-json}'
 ```
 
 
 ### Probar Get 
 ```bash
 # 1. Consultar todas las lecturas de un sensor (esperado: HTTP 200)
-curl -i -w "\n" -X GET "[https://y6jm23uqc3.execute-api.us-east-1.amazonaws.com/api/sensores/sensor-02](https://y6jm23uqc3.execute-api.us-east-1.amazonaws.com/api/sensores/sensor-02)"
+curl -i -w "\n" -X GET "https://y6jm23uqc3.execute-api.us-east-1.amazonaws.com/api/sensores/sensor-02"
 
 # 2. Consultar con límite válido (esperado: HTTP 200)
-curl -i -w "\n" -X GET "[https://y6jm23uqc3.execute-api.us-east-1.amazonaws.com/api/sensores/sensor-02?limit=1](https://y6jm23uqc3.execute-api.us-east-1.amazonaws.com/api/sensores/sensor-02?limit=1)"
+curl -i -w "\n" -X GET "https://y6jm23uqc3.execute-api.us-east-1.amazonaws.com/api/sensores/sensor-02?limit=1"
 
 # 3. Consultar con límite inválido (esperado: HTTP 400)
-curl -i -w "\n" -X GET "[https://y6jm23uqc3.execute-api.us-east-1.amazonaws.com/api/sensores/sensor-02?limit=0](https://y6jm23uqc3.execute-api.us-east-1.amazonaws.com/api/sensores/sensor-02?limit=0)"
+curl -i -w "\n" -X GET "https://y6jm23uqc3.execute-api.us-east-1.amazonaws.com/api/sensores/sensor-02?limit=0"
